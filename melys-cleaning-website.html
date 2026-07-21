@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Mely's Cleaning Service — Richmond, TX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Mono:wght@500;600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --kraft:#F3ECDD;
+    --kraft-deep:#E8DEC7;
+    --ink:#1B1B18;
+    --ink-soft:#565149;
+    --bottle:#1F4A3E;
+    --bottle-deep:#153229;
+    --ticket-red:#B23A2E;
+    --thread:#D9A441;
+    --paper:#FBF8F0;
+    --radius-md:4px;
+    --shadow:0 24px 48px -28px rgba(27,27,24,0.45);
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--kraft);color:var(--ink);
+    font-family:'Work Sans', sans-serif;font-size:16px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{font-family:'Zilla Slab', serif;font-weight:700;letter-spacing:-0.01em;color:var(--ink);margin:0;}
+  .mono{font-family:'IBM Plex Mono', monospace;letter-spacing:0.04em;}
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+  section{position:relative;}
+  .skip-link{position:absolute;left:-999px;top:0;background:var(--bottle-deep);color:var(--paper);padding:12px 20px;border-radius:0 0 8px 0;z-index:200;}
+  .skip-link:focus{left:0;}
+
+  /* perforation strip - simulates a torn ticket edge between the underlying color and the page */
+  .perf{height:30px;position:relative;z-index:2;}
+  .perf.on-kraft{background-image:radial-gradient(circle at 15px 0, var(--kraft) 9px, transparent 9.5px);background-repeat:repeat-x;background-size:30px 30px;background-position:top;}
+  .perf.on-bottle{background:var(--bottle-deep);background-image:radial-gradient(circle at 15px 0, var(--kraft) 9px, transparent 9.5px);background-repeat:repeat-x;background-size:30px 30px;background-position:top;}
+  .perf.flip{background-position:bottom;transform:translateY(1px);}
+
+  /* ---------- NAV ---------- */
+  .nav{position:sticky;top:0;z-index:100;background:rgba(243,236,221,0.94);backdrop-filter:blur(8px);border-bottom:2px dashed rgba(27,27,24,0.18);}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:78px;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Zilla Slab',serif;font-weight:700;font-size:1.3rem;color:var(--ink);text-decoration:none;}
+  .brand .tag{width:36px;height:36px;flex-shrink:0;}
+  .nav-links{display:flex;gap:30px;list-style:none;margin:0;padding:0;}
+  .nav-links a{text-decoration:none;font-weight:600;font-size:0.9rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink-soft);padding:8px 2px;border-bottom:2px solid transparent;transition:color .2s var(--ease), border-color .2s var(--ease);}
+  .nav-links a:hover, .nav-links a:focus-visible{color:var(--bottle-deep);border-color:var(--ticket-red);}
+  .nav-cta{display:inline-flex;align-items:center;gap:8px;background:var(--ticket-red);color:var(--paper);padding:12px 22px;border-radius:2px;text-decoration:none;font-weight:600;font-size:0.9rem;transition:transform .2s var(--ease), background .2s var(--ease);white-space:nowrap;}
+  .nav-cta:hover{background:#96301F;transform:translateY(-2px);}
+  .nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:8px;}
+  .nav-toggle svg{width:26px;height:26px;color:var(--ink);}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:76px 0 0;}
+  .hero .wrap{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center;padding-bottom:64px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--bottle-deep);margin-bottom:22px;}
+  .eyebrow::before{content:"";width:24px;height:2px;background:var(--ticket-red);display:inline-block;}
+  .hero h1{font-size:clamp(2.5rem, 5.2vw, 3.9rem);line-height:1.04;}
+  .hero h1 .accent{color:var(--ticket-red);font-style:italic;}
+  .hero p.lede{font-size:1.15rem;color:var(--ink-soft);max-width:46ch;margin:24px 0 36px;}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}
+  .btn-primary{background:var(--bottle-deep);color:var(--paper);padding:16px 30px;border-radius:2px;text-decoration:none;font-weight:600;font-size:1rem;box-shadow:var(--shadow);transition:transform .2s var(--ease), background .2s var(--ease);display:inline-flex;align-items:center;gap:10px;}
+  .btn-primary:hover{background:var(--bottle);transform:translateY(-3px);}
+  .btn-ghost{padding:16px 26px;border-radius:2px;text-decoration:none;font-weight:600;font-size:1rem;color:var(--ink);border:2px dashed rgba(27,27,24,0.35);transition:border-color .2s var(--ease), background .2s var(--ease);}
+  .btn-ghost:hover{border-color:var(--ink);background:var(--kraft-deep);}
+  .trust-row{display:flex;gap:0;margin-top:44px;flex-wrap:wrap;border-top:2px dashed rgba(27,27,24,0.22);padding-top:24px;}
+  .trust-item{display:flex;flex-direction:column;padding-right:28px;margin-right:28px;border-right:2px dashed rgba(27,27,24,0.22);}
+  .trust-item:last-child{border-right:none;margin-right:0;}
+  .trust-item strong{font-family:'Zilla Slab',serif;font-size:1.5rem;color:var(--ticket-red);}
+  .trust-item span{font-size:0.8rem;color:var(--ink-soft);}
+
+  /* Hero ticket illustration — signature element */
+  .ticket-hero{position:relative;max-width:440px;justify-self:end;width:100%;transform:rotate(3deg);}
+  .ticket-hero .stub{background:var(--paper);border:2px solid var(--ink);border-radius:6px;box-shadow:var(--shadow);position:relative;padding:0;overflow:hidden;}
+  .ticket-hero .stub-top{padding:26px 26px 20px;}
+  .ticket-hero .hole{position:absolute;top:18px;left:18px;width:16px;height:16px;border-radius:50%;background:var(--kraft);border:2px solid var(--ink);}
+  .ticket-hero .kicker{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-soft);margin-left:40px;}
+  .ticket-hero .big{font-family:'Zilla Slab',serif;font-size:1.6rem;font-weight:700;margin:10px 0 4px 40px;line-height:1.15;}
+  .ticket-hero .num{margin-left:40px;color:var(--ticket-red);font-size:0.85rem;}
+  .ticket-hero .perf-mid{height:0;border-top:2px dashed var(--ink);position:relative;margin:0;}
+  .ticket-hero .perf-mid::before, .ticket-hero .perf-mid::after{content:"";position:absolute;top:-9px;width:18px;height:18px;border-radius:50%;background:var(--kraft);border:2px solid var(--ink);}
+  .ticket-hero .perf-mid::before{left:-11px;}
+  .ticket-hero .perf-mid::after{right:-11px;}
+  .ticket-hero .stub-bottom{padding:18px 26px 26px;display:flex;justify-content:space-between;align-items:flex-end;}
+  .ticket-hero .stub-bottom .label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-soft);}
+  .ticket-hero .stub-bottom .val{font-family:'Zilla Slab',serif;font-weight:700;font-size:1.15rem;}
+  .ticket-hero .barcode{display:flex;gap:2px;align-items:flex-end;height:30px;}
+  .ticket-hero .barcode span{width:3px;background:var(--ink);display:block;}
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section-head{max-width:620px;margin:0 0 48px;}
+  .section-head .eyebrow{margin-bottom:16px;}
+  .section-head h2{font-size:clamp(1.9rem, 3.4vw, 2.7rem);line-height:1.12;}
+  .section-head p{color:var(--ink-soft);margin-top:16px;font-size:1.05rem;}
+  .center{text-align:center;margin-left:auto;margin-right:auto;}
+  .center .eyebrow::before{display:none;}
+
+  /* ---------- SERVICES (ticket stubs) ---------- */
+  .services{padding:20px 0 100px;background:var(--kraft);}
+  .ticket-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;}
+  .ticket{background:var(--paper);border:2px solid var(--ink);border-radius:6px;display:grid;grid-template-columns:1fr auto;overflow:hidden;opacity:0;transform:translateY(24px);transition:transform .6s var(--ease), opacity .6s var(--ease), box-shadow .3s var(--ease);}
+  .ticket.revealed{opacity:1;transform:translateY(0);}
+  .ticket:hover{box-shadow:var(--shadow);}
+  .ticket-main{padding:26px 24px;}
+  .ticket-main .idx{font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--ticket-red);margin-bottom:8px;display:block;}
+  .ticket-main h3{font-size:1.15rem;margin-bottom:8px;}
+  .ticket-main p{color:var(--ink-soft);font-size:0.92rem;margin:0;}
+  .ticket-stub{position:relative;width:112px;border-left:2px dashed var(--ink);background:var(--kraft-deep);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 10px;text-align:center;}
+  .ticket-stub::before, .ticket-stub::after{content:"";position:absolute;left:-11px;width:18px;height:18px;border-radius:50%;background:var(--kraft);border:2px solid var(--ink);}
+  .ticket-stub::before{top:-11px;}
+  .ticket-stub::after{bottom:-11px;}
+  .ticket-stub .freq{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;text-transform:uppercase;color:var(--ink-soft);letter-spacing:0.05em;}
+  .ticket-stub .icon{margin:8px 0;color:var(--bottle-deep);}
+  .ticket-stub .icon svg{width:26px;height:26px;}
+
+  /* ---------- PROCESS ---------- */
+  .process{padding:100px 0;background:var(--paper);border-top:2px dashed rgba(27,27,24,0.2);border-bottom:2px dashed rgba(27,27,24,0.2);}
+  .process-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:56px;}
+  .process-step{position:relative;padding:0 32px;}
+  .process-step + .process-step{border-left:2px dashed rgba(27,27,24,0.22);}
+  .process-step .num{font-family:'IBM Plex Mono',monospace;font-size:1rem;color:var(--ticket-red);margin-bottom:14px;display:block;}
+  .process-step h3{font-size:1.25rem;margin-bottom:10px;}
+  .process-step p{color:var(--ink-soft);margin:0;font-size:0.97rem;}
+
+  /* ---------- WHY (bottle band) ---------- */
+  .why{padding:96px 0;background:var(--bottle-deep);color:var(--kraft);}
+  .why .wrap{display:grid;grid-template-columns:0.9fr 1.1fr;gap:64px;align-items:center;}
+  .why h2{color:var(--paper);}
+  .why .eyebrow{color:var(--thread);}
+  .why .eyebrow::before{background:var(--thread);}
+  .why .section-head p{color:rgba(243,236,221,0.72);}
+  .why-list{list-style:none;margin:0;padding:0;display:grid;gap:0;}
+  .why-list li{display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-bottom:2px dashed rgba(243,236,221,0.2);}
+  .why-list li:first-child{padding-top:0;}
+  .why-list .idx{font-family:'IBM Plex Mono',monospace;color:var(--thread);font-size:0.85rem;flex-shrink:0;margin-top:3px;}
+  .why-list strong{display:block;font-family:'Zilla Slab',serif;font-weight:700;font-size:1.08rem;color:var(--paper);}
+  .why-list span{font-size:0.92rem;color:rgba(243,236,221,0.72);}
+
+  /* ---------- AREA ---------- */
+  .area{padding:100px 0;background:var(--kraft);}
+  .area .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+  .area-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+  .area-tags span{font-family:'IBM Plex Mono',monospace;background:var(--paper);border:2px solid var(--ink);color:var(--ink);font-weight:500;font-size:0.82rem;padding:8px 14px;border-radius:2px;}
+  .area-map{aspect-ratio:4/3;border-radius:6px;background:var(--paper);border:2px solid var(--ink);position:relative;overflow:hidden;box-shadow:var(--shadow);}
+  .area-map svg{position:absolute;inset:0;width:100%;height:100%;}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testimonials{padding:100px 0;background:var(--paper);border-top:2px dashed rgba(27,27,24,0.2);}
+  .t-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .t-card{background:var(--kraft);border:2px solid var(--ink);border-radius:6px;padding:28px 26px;position:relative;}
+  .t-card::before{content:"";position:absolute;top:-2px;left:24px;width:34px;height:14px;background:var(--thread);border:2px solid var(--ink);border-top:none;border-radius:0 0 4px 4px;}
+  .stars{color:var(--ticket-red);letter-spacing:2px;margin-bottom:14px;font-size:0.95rem;}
+  .t-card p{font-size:0.98rem;color:var(--ink);margin:0 0 20px;}
+  .t-card .who strong{display:block;font-size:0.9rem;font-family:'Zilla Slab',serif;}
+  .t-card .who span{font-size:0.78rem;color:var(--ink-soft);}
+  .t-note{margin-top:26px;font-size:0.8rem;color:var(--ink-soft);text-align:center;font-style:italic;}
+
+  /* ---------- CTA / CONTACT ---------- */
+  .cta{padding:100px 0 0;background:var(--bottle-deep);}
+  .cta .wrap{position:relative;display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;padding-bottom:80px;}
+  .cta-copy h2{color:var(--paper);font-size:clamp(1.9rem,3.2vw,2.5rem);max-width:15ch;}
+  .cta-copy .eyebrow{color:var(--thread);}
+  .cta-copy .eyebrow::before{background:var(--thread);}
+  .cta-copy p{color:rgba(243,236,221,0.75);margin:18px 0 32px;max-width:40ch;}
+  .cta-actions{display:flex;flex-wrap:wrap;gap:16px;}
+  .cta .btn-primary{background:var(--ticket-red);}
+  .cta .btn-primary:hover{background:#96301F;}
+  .cta .btn-ghost{color:var(--paper);border-color:rgba(243,236,221,0.4);}
+  .cta .btn-ghost:hover{background:rgba(243,236,221,0.08);border-color:var(--paper);}
+
+  .contact-panel{background:var(--paper);border:2px solid var(--ink);border-radius:6px;padding:40px;box-shadow:var(--shadow);align-self:start;}
+  .contact-panel h3{font-size:1.25rem;margin-bottom:22px;}
+  .contact-row{display:flex;gap:14px;align-items:flex-start;margin-bottom:20px;}
+  .contact-row .icon{width:38px;height:38px;border-radius:2px;background:var(--kraft-deep);border:2px solid var(--ink);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+  .contact-row .icon svg{width:18px;height:18px;color:var(--bottle-deep);}
+  .contact-row a{text-decoration:none;font-weight:600;color:var(--bottle-deep);}
+  .contact-row span.label{display:block;font-family:'IBM Plex Mono',monospace;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--ink-soft);margin-bottom:3px;}
+  .hours{border-top:2px dashed rgba(27,27,24,0.22);margin-top:6px;padding-top:20px;}
+  .hours ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:0.88rem;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;}
+  .hours li{display:flex;justify-content:space-between;}
+  .hours li strong{color:var(--ink);font-weight:600;}
+
+  /* ---------- FOOTER (receipt strip) ---------- */
+  footer{background:var(--ink);color:rgba(243,236,221,0.65);}
+  .receipt-edge{height:22px;background-image:radial-gradient(circle at 15px 22px, var(--bottle-deep) 9px, transparent 9.5px);background-repeat:repeat-x;background-size:30px 30px;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-size:0.82rem;padding:32px 24px 40px;font-family:'IBM Plex Mono',monospace;}
+  footer .brand-f{color:var(--paper);font-size:1rem;font-family:'Zilla Slab',serif;font-weight:700;}
+  footer a{color:rgba(243,236,221,0.85);text-decoration:none;}
+
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease), transform .7s var(--ease);}
+  .reveal.revealed{opacity:1;transform:translateY(0);}
+
+  @media (max-width:960px){
+    .hero .wrap, .why .wrap, .area .wrap, .cta .wrap{grid-template-columns:1fr;}
+    .ticket-hero{justify-self:center;margin-top:10px;}
+    .ticket-grid, .t-grid{grid-template-columns:1fr;}
+    .process-grid{grid-template-columns:1fr;gap:36px;}
+    .process-step + .process-step{border-left:none;border-top:2px dashed rgba(27,27,24,0.22);padding-top:32px;}
+    .nav-links{display:none;}
+    .contact-panel{margin-top:12px;}
+  }
+  @media (max-width:640px){
+    .nav-cta{display:none;}
+    .nav-toggle{display:block;}
+    .hero{padding:56px 0 0;}
+    .contact-panel{padding:28px;}
+    .trust-row{gap:0;}
+    .trust-item{padding-right:18px;margin-right:18px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <svg class="tag" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="4" y="4" width="32" height="32" rx="3" fill="#1F4A3E"/>
+        <circle cx="12" cy="12" r="3" fill="#F3ECDD" stroke="#1B1B18" stroke-width="1.5"/>
+        <path d="M10 26h20M10 20h14" stroke="#D9A441" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      Mely's Cleaning
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#process">How it works</a></li>
+      <li><a href="#area">Service area</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+    </ul>
+    <a class="nav-cta" href="tel:+12812039203">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      (281) 203-9203
+    </a>
+    <button class="nav-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  </div>
+</nav>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">Richmond, TX &amp; Fort Bend County</div>
+        <h1>Your home,<br><span class="accent">claimed &amp; cleaned.</span></h1>
+        <p class="lede">Mely's Cleaning Service brings dependable, detail-obsessed house cleaning to Richmond families — book it like a ticket, pick it up spotless.</p>
+        <div class="hero-actions">
+          <a class="btn-primary" href="#quote">
+            Get a free quote
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <a class="btn-ghost" href="tel:+12812039203">Call (281) 203-9203</a>
+        </div>
+        <div class="trust-row">
+          <div class="trust-item"><strong>100%</strong><span>Satisfaction focused</span></div>
+          <div class="trust-item"><strong>Flexible</strong><span>Weekly, biweekly, monthly</span></div>
+          <div class="trust-item"><strong>Local</strong><span>Owner-operated, Richmond TX</span></div>
+        </div>
+      </div>
+
+      <div class="ticket-hero">
+        <div class="stub">
+          <div class="stub-top">
+            <div class="hole"></div>
+            <div class="kicker mono">Cleaning claim ticket</div>
+            <div class="big">Standard Home Service</div>
+            <div class="num mono">No. 0142 &nbsp;·&nbsp; Richmond, TX</div>
+          </div>
+          <div class="perf-mid"></div>
+          <div class="stub-bottom">
+            <div>
+              <div class="label mono">Turnaround</div>
+              <div class="val">Same week</div>
+            </div>
+            <div class="barcode" aria-hidden="true">
+              <span style="height:28px"></span><span style="height:18px"></span><span style="height:24px"></span>
+              <span style="height:14px"></span><span style="height:28px"></span><span style="height:20px"></span>
+              <span style="height:24px"></span><span style="height:16px"></span><span style="height:28px"></span>
+              <span style="height:12px"></span><span style="height:22px"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="perf on-kraft flip"></div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="section-head center" style="padding-top:56px;">
+        <div class="eyebrow">What we do</div>
+        <h2>Every visit, itemized. Every job, claimed.</h2>
+        <p>Pick a plan the way you'd read a claim ticket: what's included, how often, done.</p>
+      </div>
+      <div class="ticket-grid">
+        <div class="ticket">
+          <div class="ticket-main">
+            <span class="idx mono">NO. 01</span>
+            <h3>Standard House Cleaning</h3>
+            <p>Kitchens, bathrooms, dusting, floors, and living spaces refreshed on a schedule that fits your routine.</p>
+          </div>
+          <div class="ticket-stub">
+            <span class="freq">Recurring</span>
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+            <span class="freq">Wk · Bi-wk</span>
+          </div>
+        </div>
+        <div class="ticket">
+          <div class="ticket-main">
+            <span class="idx mono">NO. 02</span>
+            <h3>Deep Cleaning</h3>
+            <p>A top-to-bottom reset — inside appliances, baseboards, grout, and every overlooked corner.</p>
+          </div>
+          <div class="ticket-stub">
+            <span class="freq">One-time</span>
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg></span>
+            <span class="freq">First visit</span>
+          </div>
+        </div>
+        <div class="ticket">
+          <div class="ticket-main">
+            <span class="idx mono">NO. 03</span>
+            <h3>Move In / Move Out</h3>
+            <p>An empty-home clean that gets deposits back and new homes move-in ready, cabinets and closets included.</p>
+          </div>
+          <div class="ticket-stub">
+            <span class="freq">One-time</span>
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span>
+            <span class="freq">Flexible</span>
+          </div>
+        </div>
+        <div class="ticket">
+          <div class="ticket-main">
+            <span class="idx mono">NO. 04</span>
+            <h3>Recurring Maintenance</h3>
+            <p>Set-it-and-forget-it plans that keep your home consistently clean, with the same trusted cleaner each visit.</p>
+          </div>
+          <div class="ticket-stub">
+            <span class="freq">Recurring</span>
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span>
+            <span class="freq">Monthly+</span>
+          </div>
+        </div>
+        <div class="ticket">
+          <div class="ticket-main">
+            <span class="idx mono">NO. 05</span>
+            <h3>Post-Event &amp; Occasion Cleaning</h3>
+            <p>Before guests arrive or after they leave — a quick, thorough turnaround for parties and holidays.</p>
+          </div>
+          <div class="ticket-stub">
+            <span class="freq">One-time</span>
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7 9 18l-5-5"/></svg></span>
+            <span class="freq">Same week</span>
+          </div>
+        </div>
+        <div class="ticket">
+          <div class="ticket-main">
+            <span class="idx mono">NO. 06</span>
+            <h3>Add-On Services</h3>
+            <p>Inside-oven, inside-fridge, window tracks, and laundry — tack on exactly what your day doesn't have time for.</p>
+          </div>
+          <div class="ticket-stub">
+            <span class="freq">A la carte</span>
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>
+            <span class="freq">Per add-on</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process" id="process">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">How it works</div>
+        <h2>From first text to sparkling home</h2>
+      </div>
+      <div class="process-grid">
+        <div class="process-step reveal">
+          <span class="num mono">STEP 01</span>
+          <h3>Reach out</h3>
+          <p>Call or text (346) 247-5214 with your home size and what you need — we'll quote it same day.</p>
+        </div>
+        <div class="process-step reveal">
+          <span class="num mono">STEP 02</span>
+          <h3>We clean</h3>
+          <p>Your cleaner arrives on schedule and works a detailed checklist, room by room, every single visit.</p>
+        </div>
+        <div class="process-step reveal">
+          <span class="num mono">STEP 03</span>
+          <h3>You relax</h3>
+          <p>Walk into a home that smells like nothing was ever out of place. Not happy? We'll make it right.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE -->
+  <section class="why" id="why">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Why Mely's</div>
+        <h2>Cleaning is a trust business. We treat it that way.</h2>
+        <p>You're letting someone into your home — that's never lost on us.</p>
+      </div>
+      <ul class="why-list">
+        <li>
+          <span class="idx mono">01</span>
+          <div><strong>Owner-operated</strong><span>Based right here in Richmond — not a call center, a neighbor.</span></div>
+        </li>
+        <li>
+          <span class="idx mono">02</span>
+          <div><strong>Consistent teams</strong><span>The same trusted cleaner returns for every recurring visit.</span></div>
+        </li>
+        <li>
+          <span class="idx mono">03</span>
+          <div><strong>Straightforward pricing</strong><span>A clear quote before we start — no surprise line items after.</span></div>
+        </li>
+        <li>
+          <span class="idx mono">04</span>
+          <div><strong>Easy to reach</strong><span>Text, call, or email — a real person responds, same day.</span></div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SERVICE AREA -->
+  <section class="area" id="area">
+    <div class="wrap">
+      <div>
+        <div class="section-head" style="margin-bottom:0;">
+          <div class="eyebrow">Where we clean</div>
+          <h2>Proudly serving Fort Bend County</h2>
+          <p>Based on Riveredge Drive in Richmond, TX — and happy to travel across the county.</p>
+        </div>
+        <div class="area-tags">
+          <span>RICHMOND</span><span>ROSENBERG</span><span>SUGAR LAND</span>
+          <span>KATY</span><span>FULSHEAR</span><span>MISSOURI CITY</span>
+        </div>
+      </div>
+      <div class="area-map">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="400" height="300" fill="#F3ECDD"/>
+          <path d="M40 220 Q 120 40 220 90 Q 320 130 360 60" stroke="#1F4A3E" stroke-width="3" fill="none" opacity="0.35" stroke-dasharray="6 6"/>
+          <circle cx="150" cy="150" r="8" fill="#B23A2E"/>
+          <circle cx="150" cy="150" r="18" fill="none" stroke="#B23A2E" stroke-width="2" opacity="0.5"/>
+          <circle cx="240" cy="110" r="5" fill="#1F4A3E" opacity="0.6"/>
+          <circle cx="90" cy="200" r="5" fill="#1F4A3E" opacity="0.6"/>
+          <circle cx="290" cy="190" r="5" fill="#1F4A3E" opacity="0.6"/>
+          <circle cx="200" cy="230" r="5" fill="#1F4A3E" opacity="0.6"/>
+          <text x="163" y="145" font-family="IBM Plex Mono, monospace" font-size="12" fill="#1B1B18" font-weight="600">RICHMOND, TX</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials" id="reviews">
+    <div class="wrap">
+      <div class="section-head center">
+        <div class="eyebrow">Reviews</div>
+        <h2>What Richmond neighbors are saying</h2>
+      </div>
+      <div class="t-grid">
+        <div class="t-card">
+          <div class="stars">★★★★★</div>
+          <p>"Showed up on time, worked the whole visit, and my kitchen counters have never looked this good."</p>
+          <div class="who"><strong>Jenna R.</strong><span>Richmond, TX</span></div>
+        </div>
+        <div class="t-card">
+          <div class="stars">★★★★★</div>
+          <p>"We switched to biweekly and it's genuinely changed how our weekends feel. Easy to schedule, easy to trust."</p>
+          <div class="who"><strong>Marcus T.</strong><span>Rosenberg, TX</span></div>
+        </div>
+        <div class="t-card">
+          <div class="stars">★★★★★</div>
+          <p>"Used them for a move-out clean and got our full deposit back. Would book again without a second thought."</p>
+          <div class="who"><strong>Alicia P.</strong><span>Sugar Land, TX</span></div>
+        </div>
+      </div>
+      <p class="t-note">Sample reviews shown for layout — swap in real customer feedback before launch.</p>
+    </div>
+  </section>
+
+  <!-- CTA / CONTACT -->
+  <section class="cta" id="quote">
+    <div class="wrap">
+      <div class="cta-copy">
+        <div class="eyebrow">Book your ticket</div>
+        <h2>Let's get your home on the schedule.</h2>
+        <p>Free quotes, same-week openings, and a cleaner who treats your home like it's the only one on the route.</p>
+        <div class="cta-actions">
+          <a class="btn-primary" href="sms:+13462475214">Text (346) 247-5214</a>
+          <a class="btn-ghost" href="mailto:Melieh354@gmail.com">Email us</a>
+        </div>
+      </div>
+      <div class="contact-panel">
+        <h3>Contact details</h3>
+        <div class="contact-row">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div><span class="label">Call or text</span><a href="tel:+12812039203">(281) 203-9203</a> · <a href="sms:+13462475214">(346) 247-5214</a></div>
+        </div>
+        <div class="contact-row">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg></div>
+          <div><span class="label">Email</span><a href="mailto:Melieh354@gmail.com">Melieh354@gmail.com</a></div>
+        </div>
+        <div class="contact-row">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><span class="label">Based in</span>401 Riveredge Dr, Richmond, TX 77406</div>
+        </div>
+        <div class="hours">
+          <ul>
+            <li><strong>Mon – Fri</strong><span>8:00 AM – 6:00 PM</span></li>
+            <li><strong>Saturday</strong><span>9:00 AM – 4:00 PM</span></li>
+            <li><strong>Sunday</strong><span>Closed</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="perf on-bottle"></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="receipt-edge"></div>
+  <div class="wrap">
+    <span class="brand-f">Mely's Cleaning Service</span>
+    <span>RICHMOND, TX · (281) 203-9203 · <a href="mailto:Melieh354@gmail.com">Melieh354@gmail.com</a></span>
+    <span>© 2026 ALL RIGHTS RESERVED</span>
+  </div>
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.ticket, .reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('revealed'); io.unobserve(e.target); } });
+  }, {threshold:0.15});
+  revealEls.forEach(el=>io.observe(el));
+
+  const toggle = document.querySelector('.nav-toggle');
+  toggle && toggle.addEventListener('click', ()=>{
+    const links = document.querySelector('.nav-links');
+    const open = links.style.display === 'flex';
+    links.style.display = open ? 'none' : 'flex';
+    links.style.position = 'absolute';
+    links.style.top = '78px';
+    links.style.left = '0';
+    links.style.right = '0';
+    links.style.background = 'var(--kraft)';
+    links.style.flexDirection = 'column';
+    links.style.padding = '20px 24px';
+    links.style.borderBottom = '2px dashed rgba(27,27,24,0.18)';
+  });
+</script>
+
+</body>
+</html>
